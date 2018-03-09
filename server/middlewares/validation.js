@@ -77,7 +77,6 @@ export default {
  * @returns {object} JSON object representing the failure message
  */
   userRequiredInput(req, res, next) {
-    console.log('here');
     if (!req.body.email || isEmpty(req.body.email) || isEmail(req.body.email)) {
       return res.status(406).send({
         status: 'Fail',
@@ -106,8 +105,3 @@ export default {
   }
 };
 
-/** export {
-  businessRequiredInputs,
-  reviewRequiredInput,
-  userRequiredInput
-}; */
