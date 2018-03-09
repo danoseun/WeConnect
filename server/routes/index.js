@@ -16,6 +16,16 @@ const routes = (app) => {
     validation.userRequiredInput,
     UserController.registerUser
   );
+
+  app.post(
+    '/api/v1/auth/login',
+    UserController.loginUser
+  );
+
+  app.get(
+    '/api/v1/users',
+    UserController.getAllUsers
+  );
 };
 
 export default routes;

@@ -30,6 +30,46 @@ class UserController {
       user: newUser
     });
   }
+  /**
+   * Login user on the platform
+   *
+   * @static
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} JSON object representing success message
+   * @memberof UserController
+   */
+  static loginUser(req, res) {
+    const { email, password } = req.body;
+    users.forEach((user) => {
+      if (email === user.email && password === user.password) {
+        return res.status(200).json({
+          status: 'Success',
+          message: 'Logged in successfully'
+        });
+      }
+    });
+    res.status(401).json({
+      status: 'Failed',
+      message: 'Error logging in'
+    });
+  }
+  /**
+   * Get all users on the platform
+   *
+   * @static
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} JSON object representing success message
+   * @memberof UserController
+   */
+  static getAllUsers(req, res) {
+    return res.status(200).json({
+      status: 'Success',
+      message: 'You just got a list of all users',
+      user: users
+    });
+  }
 }
 
 export default UserController;
