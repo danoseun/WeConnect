@@ -30,6 +30,19 @@ class UserController {
       user: newUser
     });
   }
+  /**
+   * Login user on the platform
+   *
+   * @static
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} JSON object representing success message
+   * @memberof UserController
+   */
+  static loginUser(req, res) {
+    const { email, password } = req.body;
+    users.forEach((input) => {});
+  }
 }
 
 export default UserController;
