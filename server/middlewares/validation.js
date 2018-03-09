@@ -1,7 +1,5 @@
 import { isEmail, isEmpty } from 'validator';
 
-
-export default {
 /**
  * Check for all required input fields
  *
@@ -9,8 +7,9 @@ export default {
  * @param {object} res - The response object
  * @param {function} next -Calls the next route handler
  * @returns {object} JSON object representing failure message
-*/
+ */
 
+export default {
   businessRequiredInputs(req, res, next) {
     if (!req.body.businessName || isEmpty(req.body.businessName)) {
       return res.status(406).send({
@@ -52,13 +51,13 @@ export default {
   },
 
   /**
-* Checks for the required input fields
-*
-* @param {object} req - The request object
-* @param {object} res - The response object
-* @param {function} next - Calls the next route handler
-* @returns {object} JSON object representing the failure message
-*/
+ * Checks for the required input fields
+ *
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - Calls the next route handler
+ * @returns {object} JSON object representing the failure message
+ */
   reviewRequiredInput(req, res, next) {
     if (!req.body.content || isEmpty(req.body.content)) {
       return res.status(406).send({
@@ -70,18 +69,30 @@ export default {
   },
 
   /**
-* Checks for the required input fields
-*
-* @param {object} req - The request object
-* @param {object} res - The response object
-* @param {function} next - Calls the next route handler
-* @returns {object} JSON object representing the failure message
-*/
+ * Checks for the required input fields
+ *
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - Calls the next route handler
+ * @returns {object} JSON object representing the failure message
+ */
   userRequiredInput(req, res, next) {
     if (!req.body.email || isEmpty(req.body.email) || isEmail(req.body.email)) {
       return res.status(406).send({
         status: 'Fail',
         message: 'Email can not be empty'
+      });
+    }
+    if (!req.body.firstName || isEmpty(req.body.firstName)) {
+      return res.status(406).send({
+        status: 'Fail',
+        message: 'firstName can not be empty'
+      });
+    }
+    if (!req.body.lastName || isEmpty(req.body.lastName)) {
+      return res.status(406).send({
+        status: 'Fail',
+        message: 'lastName can not be empty'
       });
     }
     if (!req.body.password || isEmpty(req.body.password)) {
@@ -90,7 +101,7 @@ export default {
         message: 'Password can not be empty'
       });
     }
-    next();
+    return next();
   }
-
 };
+
