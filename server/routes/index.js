@@ -1,5 +1,7 @@
-import UserController from '../controllers';
+import controllers from '../controllers';
 import middlewares from '../middlewares';
+
+const { UserController, BusinessController } = controllers;
 
 const { validation } = middlewares;
 
@@ -25,6 +27,12 @@ const routes = (app) => {
   app.get(
     '/api/v1/users',
     UserController.getAllUsers
+  );
+
+  app.post(
+    '/api/v1/businesses',
+    validation.businessRequiredInput,
+    BusinessController.registerBusiness
   );
 };
 
