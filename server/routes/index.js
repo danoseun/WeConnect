@@ -11,7 +11,7 @@ const {
   registerBusiness, updateBusinessProfile, deleteBusiness, getOneBusiness,
   getAllBusinesses
 } = BusinessController;
-const { addReview } = ReviewController;
+const { addReview, getAllReviews } = ReviewController;
 
 
 const router = express.Router();
@@ -65,6 +65,11 @@ router.post(
   '/businesses/:businessId/reviews',
   reviewRequiredInput,
   addReview
+);
+// Get all reviews for a business
+router.get(
+  '/businesses/:businessId/reviews',
+  getAllReviews
 );
 
 export default router;

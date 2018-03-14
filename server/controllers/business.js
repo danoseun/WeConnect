@@ -109,8 +109,7 @@ class BusinessController {
         }
         return res.status(200).send({
           status: 'Success',
-          business: businesses[i],
-          reviews: review,
+          business: businesses[i]
         });
       }
     }
