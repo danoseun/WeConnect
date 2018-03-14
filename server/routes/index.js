@@ -31,7 +31,12 @@ router.post(
   businessRequiredInputs,
   registerBusiness
 );
-
+// Update a business profile
+router.put(
+  '/businesses/:businessId',
+  businessRequiredInputs,
+  updateBusinessProfile
+);
 
 export default router;
 
