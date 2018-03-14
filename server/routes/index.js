@@ -4,7 +4,7 @@ import { businessRequiredInputs, userRequiredInput } from '../middlewares';
 
 const { UserController, BusinessController } = controllers;
 const { registerUser, loginUser, getAllUsers } = UserController;
-const { registerBusiness, updateBusinessProfile } = BusinessController;
+const { registerBusiness, updateBusinessProfile, deleteBusiness } = BusinessController;
 
 
 const router = express.Router();
@@ -36,6 +36,12 @@ router.put(
   '/businesses/:businessId',
   businessRequiredInputs,
   updateBusinessProfile
+);
+// Remove a business
+router.delete(
+  '/businesses/:businessId',
+  businessRequiredInputs,
+  deleteBusiness
 );
 
 export default router;

@@ -63,6 +63,31 @@ class BusinessController {
       message: 'Business not found'
     });
   }
+  /**
+   * Update business Profile on the platform
+   *
+   * @static
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} JSON object representing success message
+   * @memberof BusinessController
+   */
+  static deleteBusiness(req, res) {
+    for (let i = 0; i < businesses.length; i += 1) {
+      const business = businesses[i];
+      if (business.id === parseInt(req.params.businessId, 10)) {
+        businesses.splice(i, 1);
+        return res.status(200).send({
+          status: 'Success',
+          message: 'Business deleted successfully',
+        });
+      }
+    }
+    return res.status(404).send({
+      status: 'Fail',
+      message: 'Business not found'
+    });
+  }
 }
 
 
