@@ -1,4 +1,4 @@
-import businesses from '../../dummyDb';
+import { businesses } from '../../dummyDb';
 
 /**
  * Class representing business controller
@@ -29,8 +29,10 @@ class BusinessController {
     return res.status(201).json({
       status: 'Success',
       message: 'Business created successfully',
-      user: newBusiness
+      business: newBusiness
     });
   }
 }
+
+
 export default BusinessController;

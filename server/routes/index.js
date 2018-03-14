@@ -1,39 +1,37 @@
+import express from 'express';
 import controllers from '../controllers';
-import middlewares from '../middlewares';
+import { businessRequiredInputs, userRequiredInput } from '../middlewares';
 
 const { UserController, BusinessController } = controllers;
+const { registerUser, loginUser, getAllUsers } = UserController;
+const { registerBusiness, updateBusinessProfile } = BusinessController;
 
-const { validation } = middlewares;
+
+const router = express.Router();
+
+// Signup a new user
+router.post(
+  '/auth/signup',
+  userRequiredInput,
+  registerUser
+);
+// Login a user
+router.post(
+  '/auth/login',
+  loginUser
+);
+// Get all users
+router.get(
+  '/users',
+  getAllUsers
+);
+// Create a business
+router.post(
+  '/businesses',
+  businessRequiredInputs,
+  registerBusiness
+);
 
 
-const routes = (app) => {
-  app.get('/', (req, res) => {
-    res.status(200)
-      .send('Welcome to the weConnect api');
-  });
+export default router;
 
-  // Signup a new user
-  app.post(
-    '/api/v1/auth/signup',
-    validation.userRequiredInput,
-    UserController.registerUser
-  );
-
-  app.post(
-    '/api/v1/auth/login',
-    UserController.loginUser
-  );
-
-  app.get(
-    '/api/v1/users',
-    UserController.getAllUsers
-  );
-
-  app.post(
-    '/api/v1/businesses',
-    validation.businessRequiredInput,
-    BusinessController.registerBusiness
-  );
-};
-
-export default routes;
