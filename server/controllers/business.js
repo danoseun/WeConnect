@@ -1,4 +1,4 @@
-import { businesses } from '../../dummyDb';
+import { businesses, reviews } from '../../dummyDb';
 
 /**
  * Class representing business controller
@@ -64,7 +64,7 @@ class BusinessController {
     });
   }
   /**
-   * Update business Profile on the platform
+   * Delete a business on the platform
    *
    * @static
    * @param {object} req - The request object
@@ -86,6 +86,51 @@ class BusinessController {
     return res.status(404).send({
       status: 'Fail',
       message: 'Business not found'
+    });
+  }
+  /**
+   *  Get a single business on the platform
+   *
+   * @static
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} JSON object representing success message
+   * @memberof BusinessController
+   */
+  static getOneBusiness(req, res) {
+    for (let i = 0; i < businesses.length; i += 1) {
+      const business = businesses[i],
+        review = [];
+      if (business.id === parseInt(req.params.businessId, 10)) {
+        for (let j = 0; j < reviews.length; j += 1) {
+          if (reviews[j].businessId === business.id) {
+            review.push(reviews[j]);
+          }
+        }
+        return res.status(200).send({
+          status: 'Success',
+          business: businesses[i],
+          reviews: review,
+        });
+      }
+    }
+    return res.status(404).send({
+      status: 'Fail',
+      message: 'Business not found'
+    });
+  }
+  /**
+   *Get all businesses on the platform
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} - JSON object representing the businesses
+   * @memberof BusinessController
+   */
+  static getAllBusinesses(req, res) {
+    return res.status(200).json({
+      status: 'Success',
+      businesses,
+      reviews
     });
   }
 }
