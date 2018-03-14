@@ -32,6 +32,37 @@ class BusinessController {
       business: newBusiness
     });
   }
+  /**
+   * Update business Profile on the platform
+   *
+   * @static
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} JSON object representing success message
+   * @memberof BusinessController
+   */
+  static updateBusinessProfile(req, res) {
+    for (let i = 0; i < businesses.length; i += 1) {
+      const business = businesses[i];
+      if (business.id === parseInt(req.params.businessId, 10)) {
+        business.businessName = req.body.businessName;
+        business.description = req.body.description;
+        business.email = req.body.email;
+        business.location = req.body.location;
+        business.category = req.body.category;
+        business.phoneNumber = req.body.phoneNumber;
+        return res.status(201).send({
+          status: 'Success',
+          message: 'Business profile updated successfully',
+          business,
+        });
+      }
+    }
+    return res.status(404).send({
+      status: 'Fail',
+      message: 'Business not found'
+    });
+  }
 }
 
 
