@@ -1,3 +1,7 @@
 import UserController from './user';
+import BusinessController from './business';
 
-export default UserController;
+export default {
+  UserController,
+  BusinessController
+};

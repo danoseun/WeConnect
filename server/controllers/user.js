@@ -1,4 +1,4 @@
-import users from '../../dummyDb';
+import { users } from '../../dummyDb';
 
 /**
  * Class representing user controller
@@ -66,7 +66,6 @@ class UserController {
   static getAllUsers(req, res) {
     return res.status(200).json({
       status: 'Success',
-      message: 'You just got a list of all users',
       user: users
     });
   }

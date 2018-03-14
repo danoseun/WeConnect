@@ -1,6 +1,5 @@
-import validation from './validation';
+import userRequiredInput from './userRequiredInput';
+import businessRequiredInputs from './businessRequiredInput';
+import reviewRequiredInput from './reviewRequiredInput';
 
-// This file exports all the validation functions
-export default {
-  validation
-};
+export { userRequiredInput, businessRequiredInputs, reviewRequiredInput };

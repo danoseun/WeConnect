@@ -1,4 +1,5 @@
 import users from './user';
+import businesses from './business';
 
 // This file exports all the in-memory data
-export default users;
+export { users, businesses };
