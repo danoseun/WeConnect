@@ -119,6 +119,20 @@ class BusinessController {
       message: 'Business not found'
     });
   }
+  /**
+   *Get all businesses on the platform
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   * @return {object} - JSON object representing the businesses
+   * @memberof BusinessController
+   */
+  static getAllBusinesses(req, res) {
+    return res.status(200).json({
+      status: 'Success',
+      businesses,
+      reviews
+    });
+  }
 }
 
 
