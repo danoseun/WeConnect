@@ -132,49 +132,8 @@ class BusinessController {
       reviews
     });
   }
-  /**
-   *Get all businesses with the specified location on the platform
-   * @param {object} req - The request object
-   * @param {object} res - The response object
-   *@param {object} next - Moves to the next rote handler
-   * @return {object} - JSON object representing the businesses
-   * @memberof BusinessController
-   */
-  static filterSearch(req, res, next) {
-    const result = [];
-    const { category, location } = req.query;
-    for (let i = 0; i < businesses.length; i += 1) {
-      if (category === businesses[i].category
-        && location === businesses[i].location) {
-      // Get businesses in a particlar location within a category
-        result.push(businesses[i]);
-      } else if (!category && location === businesses[i].location) {
-      // Get all businesses within a location
-        result.push(businesses[i]);
-      } else if (category === businesses[i].category && !location) {
-      // Get all businesses within a category
-        result.push(businesses[i]);
-      } else if (category !== businesses[i].category ||
-        location !== businesses[i].location) {
-      // Go to next route
-        return res.status(404)
-          .send({
-            message: 'The location or category is not available yet',
-            status: 'Fail',
-          });
-      } else if (!category && !location) {
-        // Go to next route
-        next();
-      }
-    }
-    return res.status(200)
-      .send({
-        searchResult: result,
-        message: 'Great, your search was successful',
-        status: 'Success',
-      });
-  }
 }
 
 
 export default BusinessController;
+
