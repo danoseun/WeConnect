@@ -99,8 +99,8 @@ class BusinessController {
    */
   static getOneBusiness(req, res) {
     for (let i = 0; i < businesses.length; i += 1) {
-      const business = businesses[i],
-        review = [];
+      const business = businesses[i];
+      const review = [];
       if (business.id === parseInt(req.params.businessId, 10)) {
         for (let j = 0; j < reviews.length; j += 1) {
           if (reviews[j].businessId === business.id) {
@@ -132,7 +132,72 @@ class BusinessController {
       reviews
     });
   }
+  /**
+*
+*Filter user search by locaton/category and both.
+* @param {any} req
+* @param {any} res
+* @param {any} next
+* @returns {JSON} gets sorted search
+* @memberof BusinessController
+*/
+  static filterSearch(req, res, next) {
+    const { category, location } = req.query;
+    const filteredCategory = businesses.filter(businessItem =>
+      businessItem.category === category);
+    const filteredLocation = businesses.filter(businessItem =>
+      businessItem.location === location);
+    const filteredArray = businesses.filter(businessItem =>
+      businessItem.location === location
+      && businessItem.category === category);
+    if (category || location) {
+      if (category && location === undefined) {
+        if (filteredCategory.length > 0) {
+          res.status(200)
+            .send({
+              filteredCategory,
+            });
+        } else if (filteredCategory.length === 0) {
+          res.status(404)
+            .send({
+              status: 'Fail',
+              message: `The category '${category}' does not exist`,
+            });
+        }
+      }
+      if (location && category === undefined) {
+        if (filteredLocation.length > 0) {
+          res.status(200)
+            .send({
+              filteredLocation,
+            });
+        }
+        if (filteredLocation.length === 0) {
+          res.status(404)
+            .send({
+              status: 'Fail',
+              message: `The location '${location}' does not exist`,
+            });
+        }
+      }
+    }
+    if (category !== undefined && location !== undefined) {
+      if (filteredArray.length > 0) {
+        res.status(200)
+          .send({
+            filteredArray,
+          });
+      } else if (filteredArray.length === 0) {
+        res.status(404)
+          .send({
+            status: 'Fail',
+            message: 'Location or Category not found',
+          });
+      }
+    } next();
+  }
 }
 
 
 export default BusinessController;
+

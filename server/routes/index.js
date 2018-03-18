@@ -2,14 +2,14 @@ import express from 'express';
 import controllers from '../controllers';
 import {
   businessRequiredInputs, userRequiredInput,
-  reviewRequiredInput
+  reviewRequiredInput,
 } from '../middlewares';
 
 const { UserController, BusinessController, ReviewController } = controllers;
 const { registerUser, loginUser, getAllUsers } = UserController;
 const {
   registerBusiness, updateBusinessProfile, deleteBusiness, getOneBusiness,
-  getAllBusinesses
+  getAllBusinesses, filterSearch
 } = BusinessController;
 const { addReview, getAllReviews } = ReviewController;
 
@@ -58,6 +58,7 @@ router.get(
 // Get all businesses
 router.get(
   '/businesses',
+  filterSearch,
   getAllBusinesses
 );
 // Add review for a business
@@ -71,6 +72,7 @@ router.get(
   '/businesses/:businessId/reviews',
   getAllReviews
 );
+
 
 export default router;
 
