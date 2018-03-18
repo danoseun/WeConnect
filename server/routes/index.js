@@ -25,6 +25,7 @@ router.post(
 // Login a user
 router.post(
   '/auth/login',
+  userRequiredInput,
   loginUser
 );
 // Get all users
