@@ -2,15 +2,14 @@ import express from 'express';
 import controllers from '../controllers';
 import {
   businessRequiredInputs, userRequiredInput,
-  reviewRequiredInput, FilterController
+  reviewRequiredInput,
 } from '../middlewares';
 
-const { filterByLocation, filterByCategory } = FilterController;
 const { UserController, BusinessController, ReviewController } = controllers;
 const { registerUser, loginUser, getAllUsers } = UserController;
 const {
   registerBusiness, updateBusinessProfile, deleteBusiness, getOneBusiness,
-  getAllBusinesses,
+  getAllBusinesses, filterSearch
 } = BusinessController;
 const { addReview, getAllReviews } = ReviewController;
 
@@ -59,8 +58,7 @@ router.get(
 // Get all businesses
 router.get(
   '/businesses',
-  filterByLocation,
-  filterByCategory,
+  filterSearch,
   getAllBusinesses
 );
 // Add review for a business
