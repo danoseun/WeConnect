@@ -60,7 +60,7 @@ const userRequiredInput = (req, res, next) => {
   if (errors) {
     return res.status(400).send({ message: errors[0].msg });
   }
-  next();
+  return next();
 };
 
 export default userRequiredInput;
