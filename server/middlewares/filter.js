@@ -2,64 +2,68 @@ import { businesses } from '../../dummyDb';
 
 /**
  * Class representing filter controller
- *
- * @class FilterController
- */
-class FilterController {
-  /**
-   * @description Searches and gets business by Location
-   *
-   * @param {Object} req - api request
-   *
-   * @param {Object} res - route response
-   *
-   * @param {Function} next - next middleware
-   *
-   * @return {JSON} - message and the location Array
-   */
-  static filterByLocation(req, res, next) {
-    const { location } = req.query;
-    const locationArray = [];
-    if (location) {
-      for (let i = 0; i < businesses.length; i += 1) {
-        if (location.toLowerCase() === businesses[i].location.toLowerCase()) {
-          locationArray.push(businesses[i]);
-        }
-      }
-      return res.status(200).send({
-        message: 'Your search was successful',
-        filteredArray: locationArray
-      });
-    }
-    next();
-  }
 
   /**
-   * @description Searches and gets business by Category
+   * @description Searches and gets business by Location and category
    *
-   * @param {Object} req - api request
+   * @param {Object} req - API request
    *
    * @param {Object} res - route response
    *
    * @param {Function} next - next middleware
    *
-   * @return {JSON} - message and the category Array
+   * @return {JSON} - message and the Array
    */
-  static filterByCategory(req, res, next) {
-    const { category } = req.query;
-    const categoryArray = [];
-    if (category) {
-      for (let i = 0; i < businesses.length; i += 1) {
-        if (category.toLowerCase() === businesses[i].category.toLowerCase()) {
-          categoryArray.push(businesses[i]);
-        }
-      }
-      return res.status(200).send({
-        message: 'Your search was successful',
-        filteredArray: categoryArray
-      });
+const FilterController = (req, res, next) => {
+  const { category, location } = req.query;
+  let categories;
+  let locations;
+  if (category && location) {
+    const filteredArray = businesses.filter(businessItem =>
+      businessItem.location.toLowerCase() === location.toLowerCase()
+        && businessItem.category.toLowerCase() === category.toLowerCase());
+    if (filteredArray.length === 0) {
+      res.status(406)
+        .send({
+          status: 'Fail',
+          message: 'The location and category matching does not exist',
+        });
     }
-    next();
+    res.status(200)
+      .send({
+        filteredArray,
+      });
   }
-}
+  if (category && !location) {
+    categories = businesses.filter(ctg =>
+      ctg.category.toLowerCase() === category.toLowerCase());
+    if (categories.length === 0) {
+      res.status(406)
+        .send({
+          status: 'Fail',
+          message: `The category '${category}' does not exist`,
+        });
+    }
+    res.status(200)
+      .send({
+        categories,
+      });
+  }
+  if (location && !category) {
+    locations = businesses.filter(loc =>
+      loc.location.toLowerCase() === location.toLowerCase());
+    if (locations.length === 0) {
+      res.status(406)
+        .send({
+          status: 'Fail',
+          message: `The location '${location}' does not exist`,
+        });
+    }
+    res.status(200)
+      .send({
+        locations,
+      });
+  }
+  next();
+};
 export default FilterController;
