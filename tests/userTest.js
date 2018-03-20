@@ -63,12 +63,12 @@ describe('Test for user route', () => {
   describe('GET /api/v1/users request route', () => {
     it('It should return 200 status code and get all users', (done) => {
       chai.request(app)
-        .get('api/v1/users')
+        .get('/api/v1/users')
         .send(users)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
-          res.body.status.should.be.a('string');
+          expect(res.body.status).to.equal('Success');
           expect(res.body).to.have.property('user');
           done();
         });
