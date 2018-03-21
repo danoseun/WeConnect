@@ -86,4 +86,111 @@ describe('Test for business route', () => {
         done();
       });
   });
+  describe('DELETE /api/v1/businesses/:businessId request route', () => {
+    it('It should return 200 status code and delete business', (done) => {
+      chai.request(app)
+        .delete('/api/v1/businesses/1')
+        .send({
+          id: 1,
+          businessName: 'Kulikuli and Sons Limited',
+          description: 'We take you to heaven and back',
+          email: 'kososhi@gmail.com',
+          location: 'Kaduna',
+          category: 'Hospitality',
+          phoneNumber: '07033288342'
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          expect(res.body.status).to.equal('Success');
+          expect(res.body.message).to.equal('Business deleted successfully');
+          done();
+        });
+    });
+  });
+  it('It should return 404 status code and not found for a business not in the database', (done) => {
+    chai.request(app)
+      .delete('/api/v1/businesses/20')
+      .send({
+        id: 20,
+        businessName: 'Kuliboy',
+        description: 'Great opportunity',
+        email: 'Tawa@gmail.com',
+        location: 'Kojotown',
+        category: 'Eduland',
+        phoneNumber: '08032371362'
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.an('object');
+        expect(res.body.status).to.equal('Fail');
+        expect(res.body.message).to.equal('Business not found');
+        done();
+      });
+  });
+  describe('GET /api/v1/businesses/:businessId request route', () => {
+    it('It should return 200 status code and return business', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/3')
+        .send({
+          id: 3,
+          businessName: 'Kulikuli and Sons Limited',
+          description: 'We take you to heaven and back',
+          email: 'kososhi@gmail.com',
+          location: 'Kaduna',
+          category: 'Hospitality',
+          phoneNumber: '07033288342'
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          expect(res.body.status).to.equal('Success');
+          expect(res.body).to.have.property('business');
+          done();
+        });
+    });
+  });
+  it('It should return 404 status code and not found for a business not in the database', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses/20')
+      .send({
+        id: 20,
+        businessName: 'Kuliboy',
+        description: 'Great opportunity',
+        email: 'Tawa@gmail.com',
+        location: 'Kojotown',
+        category: 'Eduland',
+        phoneNumber: '08032371362'
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.an('object');
+        expect(res.body.status).to.equal('Fail');
+        expect(res.body.message).to.equal('Business not found');
+        done();
+      });
+  });
+  describe('GET /api/v1/businesses request route', () => {
+    it('It should return 200 status code and return all businesses', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses')
+        .send({
+          id: 1,
+          businessName: 'Kulikuli and Sons Limited',
+          description: 'We take you to heaven and back',
+          email: 'kososhi@gmail.com',
+          location: 'Kaduna',
+          category: 'Hospitality',
+          phoneNumber: '07033288342'
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          expect(res.body.status).to.equal('Success');
+          expect(res.body).to.have.property('businesses');
+          expect(res.body).to.have.property('reviews');
+          done();
+        });
+    });
+  });
 });
