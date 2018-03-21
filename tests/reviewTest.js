@@ -39,6 +39,21 @@ describe('Test for review routes', () => {
         expect(res.body.message).to.equal('Business not found');
       });
   });
+  it('It should return 400 status code and return and an error message for empty content', (done) => {
+    chai.request(app)
+      .post('/api/v1/businesses/5/reviews')
+      .send({
+        id: 4,
+        businessId: 5,
+        content: ' '
+      })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.message.should.be.an('string');
+        done();
+      });
+  });
   describe('GET /api/v1/businesses/2/reviews request route', () => {
     it('It should return 200 status code and get all reviews for a business', (done) => {
       chai.request(app)

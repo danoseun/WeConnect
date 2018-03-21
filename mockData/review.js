@@ -8,6 +8,11 @@ const reviews = {
     id: 2,
     businessId: 2,
     content: 'Really nice guys!',
+  },
+  review3: {
+    id: 2,
+    businessId: 2,
+    content: ' ',
   }
 };
 
