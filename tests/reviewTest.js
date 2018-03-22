@@ -41,11 +41,11 @@ describe('Test for review routes', () => {
   });
   it('It should return 400 status code and return and an error message for empty content', (done) => {
     chai.request(app)
-      .post('/api/v1/businesses/5/reviews')
+      .post('/api/v1/businesses/3/reviews')
       .send({
         id: 4,
         businessId: 5,
-        content: ' '
+        content: null
       })
       .end((err, res) => {
         res.should.have.status(400);

@@ -28,5 +28,14 @@ const businesses = [
     category: 'Travels and Tours',
     phoneNumber: '07033288344'
   },
+  {
+    id: 4,
+    businessName: 'Lekoto Travels',
+    description: 'Travel with us and you won\'t regret it',
+    email: 'lekotoboss@gmail.com',
+    location: 'Kaduna',
+    category: 'Travels and Tours',
+    phoneNumber: '07033288344'
+  },
 ];
 export default businesses;
