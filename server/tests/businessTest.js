@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from './../app';
-import businesses from '../mockData/business';
+import app from '../../app';
+import businesses from '../../mockData/business';
 
 const { should, expect } = chai;
 should();
