@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import app from './../app';
 import businesses from '../mockData/business';
 
-const { should, assert, expect } = chai;
+const { should, expect } = chai;
 should();
 
 chai.use(chaiHttp);
@@ -32,10 +32,21 @@ describe('Test for business route', () => {
         });
     });
   });
-  it('It should return 400 status code and return an error message', (done) => {
+  it('It should return 400 status code and return an error message for empty category', (done) => {
     chai.request(app)
       .post('/api/v1/businesses')
       .send(businesses.business2)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.message.should.be.an('string');
+        done();
+      });
+  });
+  it('It should return 400 status code and return an error message for empty location', (done) => {
+    chai.request(app)
+      .post('/api/v1/businesses')
+      .send(businesses.business3)
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a('object');
@@ -192,5 +203,122 @@ describe('Test for business route', () => {
           done();
         });
     });
+  });
+  it('It should return 406 if the location and category does not exist', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses?location=location&category=category')
+      .send({
+        id: 4,
+        businessName: 'Kulikuli and Sons Limited',
+        description: 'We take you to heaven and back',
+        email: 'kososhi@gmail.com',
+        location: 'Qwerty',
+        category: 'Hiop',
+        phoneNumber: '07033288342'
+      })
+      .end((err, res) => {
+        res.should.have.status(406);
+        res.body.should.be.an('object');
+        expect(res.body.status).to.equal('Fail');
+        expect(res.body.message).to.equal('The location and category matching does not exist');
+        done();
+      });
+  });
+  it('It should return 200 if the location matches', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses?location=Kaduna')
+      .send({
+        id: 5,
+        businessName: 'Kulikuli and Sons Limited',
+        description: 'We take you to heaven and back',
+        email: 'kososhi@gmail.com',
+        location: 'Kaduna',
+        category: 'Pelenge',
+        phoneNumber: '07033288342'
+      })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        expect(res.body).to.have.property('locations');
+        done();
+      });
+  });
+  it('It should return 200 if the category matches', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses?category=Hospitality')
+      .send({
+        id: 5,
+        businessName: 'Kulikuli and Sons Limited',
+        description: 'We take you to heaven and back',
+        email: 'kososhi@gmail.com',
+        location: 'Kaduna',
+        category: 'Hospitality',
+        phoneNumber: '07033288342'
+      })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        expect(res.body).to.have.property('categories');
+        done();
+      });
+  });
+  it('It should return 406 if the location matches but category does not match', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses?location=Lagos&category=category')
+      .send({
+        id: 4,
+        businessName: 'Kulikuli and Sons Limited',
+        description: 'We take you to heaven and back',
+        email: 'kososhi@gmail.com',
+        location: 'Qwerty',
+        category: 'Hiop',
+        phoneNumber: '07033288342'
+      })
+      .end((err, res) => {
+        res.should.have.status(406);
+        res.body.should.be.an('object');
+        expect(res.body.status).to.equal('Fail');
+        res.body.message.should.be.a('string');
+        done();
+      });
+  });
+  it('It should return 406 if the category matches but location does not match', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses?location=Beirut&category=Hospitality')
+      .send({
+        id: 4,
+        businessName: 'Kulikuli and Sons Limited',
+        description: 'We take you to heaven and back',
+        email: 'kososhi@gmail.com',
+        location: 'Beirut',
+        category: 'Hospitality',
+        phoneNumber: '07033288342'
+      })
+      .end((err, res) => {
+        res.should.have.status(406);
+        res.body.should.be.an('object');
+        expect(res.body.status).to.equal('Fail');
+        res.body.message.should.be.a('string');
+        done();
+      });
+  });
+  it('It should return 200 if the category and location matches', (done) => {
+    chai.request(app)
+      .get('/api/v1/businesses?location=Kaduna&category=Hospitality')
+      .send({
+        id: 5,
+        businessName: 'Kulikuli and Sons Limited',
+        description: 'We take you to heaven and back',
+        email: 'kososhi@gmail.com',
+        location: 'Kaduna',
+        category: 'Hospitality',
+        phoneNumber: '07033288342'
+      })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        expect(res.body).to.have.property('filteredArray');
+        done();
+      });
   });
 });

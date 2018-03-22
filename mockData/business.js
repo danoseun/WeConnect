@@ -19,8 +19,8 @@ const businesses = {
     businessName: 'Top',
     description: 'John',
     email: 'topmakjohn@gmail.com',
-    location: 'egbere14',
-    category: '  ',
+    location: ' ',
+    category: 'Education  ',
     phoneNumber: '07032365739'
   },
 };

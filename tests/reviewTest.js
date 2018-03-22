@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import app from './../app';
 import reviews from '../mockData/review';
 
-const { should, assert, expect } = chai;
+const { should, expect } = chai;
 should();
 
 chai.use(chaiHttp);
