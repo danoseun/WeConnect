@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node ./bin/www",
     "start:dev": "nodemon --exec babel-node ./bin/www",
-    "test": "nyc --reporter=html --reporter=text mocha tests/ --exit --compilers js:babel-core/register",
+    "test": "nyc --reporter=html --reporter=text mocha ./server/tests/*.js --exit --compilers js:babel-core/register",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
