@@ -28,15 +28,19 @@ describe('Test for review routes', () => {
         });
     });
   });
-  it('It should return 404 staus code for business not found in the database', () => {
+  it('It should return 404 staus code for business not found in the database', (done) => {
     chai.request(app)
       .post('/api/v1/businesses/15/reviews')
-      .send(reviews.review15)
+      .send({
+        id: 15,
+        businessId: 15,
+        content: 'Lorem ipsum dolor Jones'
+      })
       .end((err, res) => {
         res.should.have.status(404);
         res.body.should.be.a('object');
-        expect(res.body.status).to.equal('Fail');
         expect(res.body.message).to.equal('Business not found');
+        done();
       });
   });
   it('It should return 400 status code and return and an error message for empty content', (done) => {
