@@ -9,7 +9,7 @@ const { UserController, BusinessController, ReviewController } = controllers;
 const { registerUser, loginUser, getAllUsers } = UserController;
 const {
   registerBusiness, updateBusinessProfile, deleteBusiness, getOneBusiness,
-  getAllBusinesses,
+  getAllBusinesses
 } = BusinessController;
 const { addReview, getAllReviews } = ReviewController;
 

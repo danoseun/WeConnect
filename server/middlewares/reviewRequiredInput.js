@@ -9,12 +9,14 @@
 const reviewRequiredInput = (req, res, next) => {
   req.checkBody({
     content: {
-      options: true,
-      errorMessage: 'Content is required'
-    },
-    isLength: {
-      options: [{ min: 6, max: 100 }],
-      errorMessage: 'Content should have between 6 and 1,000'
+      notEmpty: {
+        options: true,
+        errorMessage: 'Content is required'
+      },
+      isLength: {
+        options: [{ min: 6, max: 100 }],
+        errorMessage: 'Content should have between 6 and 1,000'
+      }
     }
   });
   const errors = req.validationErrors();
