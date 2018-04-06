@@ -1,0 +1,333 @@
+swagger: "2.0"
+info:
+  description: "An application that connects users with available businesses."
+  version: "1.0.0"
+  title: "WeConnect web application"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "justthinking54@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "we-connect-api.herokuapp.com"
+basePath: "/api/v1"
+tags:
+- name: "Users"
+  description: "API for user"
+- name: "Businesses"
+  description: "API for businesses"
+schemes:
+- "https"
+paths:
+  /auth/signup:
+    post:
+      tags:
+      - "Users"
+      summary: "Add a new user"
+      description: "Add a new user to the application"
+      operationId: "addUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Registers new user"
+        required: true
+        schema:
+          $ref: "#/definitions/UserSignUp"
+      responses:
+        201:
+          description: "Signed up successfully"
+  /auth/login:
+    post:
+      tags:
+      - "Users"
+      summary: "Login User"
+      description: "Logs in a registered user"
+      operationId: "loginUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Logs in a registered user"
+        required: true
+        schema:
+          $ref: "#/definitions/UserLogin"
+      responses:
+        200:
+          description: "Logged in successfully"
+        401:
+          description: "Error logging in"
+      
+  /businesses:
+    post:
+      tags:
+      - "Businesses"
+      summary: "Register a business"
+      description: "Register a new business"
+      operationId: "createdNewBusiness"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "businesses"
+        description: "Creating a new business in WeConnect"
+        required: true
+        schema:
+          $ref: "#/definitions/RegisterBusiness"
+      responses:
+        200:
+          description: "business successfuly created"
+        400:
+          description: "Error occured"
+    get:
+      tags:
+      - "Businesses"
+      summary: "Gets all businesses"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Businesses listed successfully"
+          
+  /businesses/{businessId}:
+    get:
+      tags:
+      - "Businesses"
+      summary: "Find business by ID"
+      description: "Returns a single business"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "businessId"
+        in: "path"
+        description: "ID to fetch a business"
+        required: true
+        type: "integer"
+        schema:
+          $ref: "#/definitions/RegisterBusinessModel"
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "Business not found"
+    put:
+      tags:
+      - "Businesses"
+      summary: "Updates a business profile"
+      description: "Updates a single business"
+      operationId: "updateBusiness"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "businessId"
+        in: "path"
+        description: "ID of Business that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "body"
+        in: "body"
+        description: "Updated name of the business"
+        required: true
+        schema:
+          $ref: "#/definitions/RegisterBusinessModel"
+        responses:
+        200:
+          description: "Business update successful"
+        404:
+          description: "Business with id does not found"
+          
+    delete:
+      tags:
+      - "Businesses"
+      summary: "Deletes a Business"
+      description: "Delete Business"
+      operationId: "deleteBusiness"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "businessId"
+        in: "path"
+        description: "The id of the business that needs to be deleted"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successfully deleted"
+        404:
+          description: "Business not found"
+      
+  /businesses/{businessId}/reviews:
+    post:
+      tags:
+      - "Businesses"
+      summary: "Add a business review"
+      description: "Add a business review"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "businessId"
+        in: "body"
+        description: "Adding a new business review"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "user object to add to database"
+        required: true
+        schema:
+          $ref: "#/definitions/ReviewModel"
+      responses:
+        200:
+          description: "Review was successfully added"
+        404:
+          description: "Cannot add review, business with id does not exist"
+          
+      
+  
+    get:
+      tags:
+      - "Businesses"
+      summary: "Gets all business reviews for a particular business"
+      description: "Gets all business reviews for a particular business by id"
+      operationId: "AllBusinessReview"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "businessId"
+          in: "path"
+          description: "Id to get business reviews"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Review list loaded successfully"
+        404:
+          description: "Cannot get Review, business with id does not exist"
+          
+  /businesses?location=location:
+    get:
+      tags:
+      - "Businesses"
+      summary: "Gets a business with specified location"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "location"
+        description: "Location to get a business"
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "Search was successful"
+          schema:
+            $ref: "#/definitions/RegisterBusinessModel"
+        404:
+          description: "Business under location [locationName] not found"
+  
+  /businesses?category=category:
+    get:
+      tags:
+      - "Businesses"
+      summary: "Gets a business under the specified category"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "category"
+        in: "query"
+        description: "Searches for a business category as specified in the query parameter"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/RegisterBusinessModel"
+        404:
+          description: "Business under category[categoryName] does not exist"
+          
+  definitions:
+    UserSignUp:
+      type: "object"
+    required: ["email", "password"]
+    properties:
+      email:
+        type: "string"
+        uniqueItems: false
+      password:
+        type: "string"
+        uniqueItems: true
+      
+    UserLogin:
+      type: "object"
+      required: ["email", "password"]
+      properties:
+        email:
+          type: "string"
+          uniqueItems: true
+        password:
+          type: "string"
+          uniqueItems: true
+  
+    RegisterBusinessModel:
+      type: "object"
+      required: ["businessName", "email","location","category","phoneNumber","description"]
+      properties:
+        businessName:
+          type: "string"
+          uniqueItems: true
+        email:
+          type: "string"
+          uniqueItems: true
+        description:
+          type: "string"
+          uniqueItems: true
+        phoneNumber:
+          type: "string"
+          uniqueItems: true
+        category:
+          type: "string"
+          uniqueItems: true
+        location:
+          type: "string"
+          uniqueItems: true
+  
+    
+    getBusinessModel:
+      type: "object"
+      required: ["business"]
+      properties:
+        message:
+         type: "string"
+        business:
+          type: "object"
+        
+    getAllBusinessModel:
+      type: "object"
+      required: ["message"]
+      properties:
+        message:
+          type: "string"
+        businesses:
+          type: "array"
+          business:
+            type : "object"
+        
+    addReviewModel:
+      type: "object"
+      required: ["content", "businessId"]
+      properties:
+        reviewId:
+          type: "string"
+        content:
+          type: "string"
+        businessId:
+          type: "integer"
+    
